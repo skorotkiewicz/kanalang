@@ -1,0 +1,20 @@
+[package]
+name = "chat"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+colored = "3.1.1"
+kanalang = { path = "../kanalang" }
+reqwest = { version = "0.13.2", features = ["json"] }
+rustyline = "17.0.2"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+tokio = { version = "1.49.0", features = ["macros", "rt-multi-thread"] }
+
+# cargo add colored
+# cargo add reqwest -p chat --features json
+# cargo add rustyline -p chat
+# cargo add serde -p chat --features derive
+# cargo add serde_json -p chat
+# cargo add tokio -p chat --features tokio/rt-multi-thread,tokio/macros

@@ -1,24 +1,56 @@
-# Kana
+# Kanalang
 
 Type-safe natural language translator. No LLM. Inspired by Toki Pona.
 
-## Usage
+## Install
 
 ```bash
-# Build
+# Build both binaries
 cargo build --release
 
+# Build only kanalang (minimal)
+cargo build --release -p kanalang
+
+# Build only chat
+cargo build --release -p chat
+```
+
+## Usage
+
+### kanalang - Translator
+
+```bash
 # English → Kana
-echo "i want food" | ./target/release/kanalang to
-# mi wile e pan
+./target/release/kanalang to "i want food"
+# mi wile e moku
 
 # Kana → English
-echo "mi olin e sina" | ./target/release/kanalang from
+./target/release/kanalang from "mi olin e sina"
 # I love you.
 
-# Auto-detect
-./target/release/kanalang "mi toki pona"
-# I speak good.
+# Pipe
+echo "i love you" | ./target/release/kanalang to
+# mi olin e sina
+```
+
+### chat - LLM Chat Interface
+
+Chat with any OpenAI-compatible LLM. Messages are translated to kanalang before sending and translated back to English.
+
+```bash
+./target/release/chat --endpoint http://localhost:8080/v1 --model default --api-key 123
+```
+
+Example session:
+```
+you> hello
+[kanalang] yu
+llm> hello.
+
+you> i want food
+[kanalang] mi wile e moku
+[kanalang] mi pana e moku tawa sina.
+llm> I give food to you.
 ```
 
 ## Grammar

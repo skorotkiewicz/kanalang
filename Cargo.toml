@@ -1,12 +1,8 @@
-[package]
-name = "kanalang"
-version = "0.1.1"
-edition = "2024"
+[workspace]
+members = ["kanalang", "chat"]
+resolver = "2"
 
-[dependencies]
-colored = "3.1.1"
-
-[profile.release]
+[workspace.profile.release]
 opt-level = "s"
 lto = true
 codegen-units = 1

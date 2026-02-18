@@ -19,19 +19,19 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
-            name: kanalang-linux-x86_64
+            artifact: linux-x86_64
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
-            name: kanalang-linux-aarch64
+            artifact: linux-aarch64
           - target: x86_64-apple-darwin
             os: macos-latest
-            name: kanalang-macos-x86_64
+            artifact: macos-x86_64
           - target: aarch64-apple-darwin
             os: macos-latest
-            name: kanalang-macos-aarch64
+            artifact: macos-aarch64
           - target: x86_64-pc-windows-msvc
             os: windows-latest
-            name: kanalang-windows-x86_64.exe
+            artifact: windows-x86_64
 
     steps:
       - name: Checkout
@@ -46,24 +46,41 @@ jobs:
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: sudo apt-get update && sudo apt-get install -y gcc-aarch64-linux-gnu
 
-      - name: Build
-        run: cargo build --release --target ${{ matrix.target }}
+      - name: Build kanalang
+        run: cargo build --release --target ${{ matrix.target }} -p kanalang
         env:
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
 
-      - name: Rename binary (Unix)
+      - name: Build chat
+        run: cargo build --release --target ${{ matrix.target }} -p chat
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+
+      - name: Prepare artifacts (Unix)
         if: matrix.os != 'windows-latest'
-        run: mv target/${{ matrix.target }}/release/kanalang ${{ matrix.name }}
+        run: |
+          mkdir -p release
+          mv target/${{ matrix.target }}/release/kanalang release/kanalang-${{ matrix.artifact }}
+          mv target/${{ matrix.target }}/release/chat release/chat-${{ matrix.artifact }}
 
-      - name: Rename binary (Windows)
+      - name: Prepare artifacts (Windows)
         if: matrix.os == 'windows-latest'
-        run: mv target/${{ matrix.target }}/release/kanalang.exe ${{ matrix.name }}
+        run: |
+          mkdir release
+          mv target/${{ matrix.target }}/release/kanalang.exe release/kanalang-${{ matrix.artifact }}.exe
+          mv target/${{ matrix.target }}/release/chat.exe release/chat-${{ matrix.artifact }}.exe
 
-      - name: Upload artifact
+      - name: Upload kanalang artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.name }}
-          path: ${{ matrix.name }}
+          name: kanalang-${{ matrix.artifact }}
+          path: release/kanalang-*
+
+      - name: Upload chat artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chat-${{ matrix.artifact }}
+          path: release/chat-*
 
   release:
     name: Create Release

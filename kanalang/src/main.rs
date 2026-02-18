@@ -1,10 +1,7 @@
-mod dict;
-mod parser;
-mod translator;
 use colored::Colorize;
+use kanalang::Translator;
 use std::env;
 use std::io::{self, BufRead, Write};
-use translator::Translator;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
