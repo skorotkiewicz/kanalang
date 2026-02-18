@@ -9,7 +9,7 @@ pub struct Translator {
 impl Translator {
     pub fn new() -> Self {
         let dict = Dictionary::new();
-        let parser = Parser::new(dict.clone());
+        let parser = Parser::new();
         Translator { dict, parser }
     }
 
@@ -275,7 +275,7 @@ impl Translator {
 impl Clone for Translator {
     fn clone(&self) -> Self {
         let dict = Dictionary::new();
-        let parser = Parser::new(dict.clone());
+        let parser = Parser::new();
         Translator { dict, parser }
     }
 }
