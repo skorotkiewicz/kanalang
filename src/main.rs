@@ -1,41 +1,49 @@
 mod dict;
 mod parser;
 mod translator;
-
+use colored::Colorize;
 use std::env;
 use std::io::{self, BufRead, Write};
 use translator::Translator;
 
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+
 fn print_usage() {
-    eprintln!("kana - type-safe natural language translator");
-    eprintln!();
-    eprintln!("USAGE:");
-    eprintln!("  echo \"from english to natural\" | kanalang to");
-    eprintln!("  echo \"mi toki pona\" | kanalang from");
-    eprintln!("  kanalang to \"hello world\"");
-    eprintln!("  kanalang from \"mi wile moku\"");
-    eprintln!();
-    eprintln!("COMMANDS:");
-    eprintln!("  to, en2k    Translate English → Kana");
-    eprintln!("  from, k2en  Translate Kana → English");
-    eprintln!("  (none)      Auto-detect language");
-    eprintln!();
-    eprintln!("EXAMPLES:");
-    eprintln!("  $ kanalang to \"i want food\"");
-    eprintln!("  mi wile e moku");
-    eprintln!();
-    eprintln!("  $ kanalang from \"mi toki pona\"");
-    eprintln!("  I speak good.");
-    eprintln!();
-    eprintln!("  $ echo \"i love you\" | kanalang to");
-    eprintln!("  mi olin e sina");
-    eprintln!();
-    eprintln!("KANA LANGUAGE:");
-    eprintln!("  • ~120 simple words");
-    eprintln!("  • Type-safe grammar with particles (li, e, pi)");
-    eprintln!("  • SVO word order");
-    eprintln!("  • Transparent - no secrets can hide");
-    eprintln!("  • Inspired by Toki Pona");
+    println!(
+        "{} {}",
+        "kana - type-safe natural language translator"
+            .white()
+            .bold(),
+        VERSION.dimmed()
+    );
+    println!();
+    println!("{}", "USAGE:".white().underline());
+    println!("  {}", "$ kanalang to \"i want food\"".bright_green());
+    println!("  {}", "mi wile e moku".bright_black());
+    println!();
+    println!("  {}", "$ kanalang from \"mi toki pona\"".bright_green());
+    println!("  {}", "I speak good.".bright_black());
+    println!();
+    println!("  {}", "$ echo \"i love you\" | kanalang to".bright_green());
+    println!("  {}", "mi olin e sina".bright_black());
+    println!();
+    println!("{}", "COMMANDS:".white().underline());
+    println!(
+        "  {}  {}",
+        "to, en2k".green().bold(),
+        "Translate English → Kana".white()
+    );
+    println!(
+        "  {}  {}",
+        "from, k2en".green().bold(),
+        "Translate Kana → English".white()
+    );
+    println!(
+        "  {}  {}",
+        "(none)".dimmed(),
+        "Auto-detect language".white()
+    );
+    println!();
 }
 
 fn main() {

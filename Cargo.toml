@@ -1,10 +1,18 @@
 [package]
 name = "kanalang"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
+colored = "3.1.1"
 
 [profile.release]
-opt-level = 3
+opt-level = "s"
 lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
+
+# opt-level = 3   # Maximum performance. I don’t care how big it gets. Make it fast.
+# opt-level = "z" # Minimum size. I care about binary size more than raw speed.
+# opt-level = "s" # Optimize for size, but not as aggressively as "z".
